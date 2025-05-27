@@ -16,8 +16,8 @@ from image import crop_image_bbox, squarefiy, get_bbox
 
 
 class GeneratorDataset(Dataset, ABC):
-    def __init__(self, source, config):
-        self.device = 'cuda:0'
+    def __init__(self, source, config, device='cuda:0'):
+        self.device = device
         self.config = config
         self.source = Path(source)
 

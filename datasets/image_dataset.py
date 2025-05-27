@@ -10,10 +10,10 @@ from torch.utils.data import Dataset
 
 
 class ImagesDataset(Dataset):
-    def __init__(self, config):
+    def __init__(self, config, device='cuda:0'):
         source = Path(config.actor)
         self.images = []
-        self.device = 'cuda:0'
+        self.device = device
         self.source = source
         self.config = config
         self.initialize()

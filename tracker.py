@@ -98,7 +98,7 @@ class Tracker(object):
         self.mesh_folder = os.path.join(self.save_folder, self.actor_name, "mesh")
         self.depth_folder = os.path.join(self.save_folder, self.actor_name, "depth")
         self.create_output_folders()
-        self.writer = SummaryWriter(log_dir=self.save_folder + self.actor_name + '/logs')
+        self.writer = SummaryWriter(log_dir=self.save_folder + '/' + self.actor_name + '/logs')
         self.setup_renderer()
 
     def get_image_size(self):
@@ -552,7 +552,7 @@ class Tracker(object):
 
         input_image = util.to_image(batch['image'].clone()[0].cpu().numpy())
 
-        savefolder = self.save_folder + self.actor_name + frame_dst
+        savefolder = self.save_folder + '/' + self.actor_name + frame_dst
         Path(savefolder).mkdir(parents=True, exist_ok=True)
 
         with torch.no_grad():
@@ -675,9 +675,9 @@ class Tracker(object):
         return images, landmarks, landmarks_dense[:, mediapipe_idx, :2], lmk_dense_mask[:, mediapipe_idx, :], lmk_mask
 
     def prepare_data(self):
-        self.data_generator = GeneratorDataset(self.config.actor, self.config)
+        self.data_generator = GeneratorDataset(self.config.actor, self.config, device=self.device)
         self.data_generator.run()
-        self.dataset = ImagesDataset(self.config)
+        self.dataset = ImagesDataset(self.config, device=self.device)
         self.dataloader = DataLoader(self.dataset, batch_size=1, num_workers=0, shuffle=False, pin_memory=True, drop_last=False)
 
     def initialize_tracking(self):
